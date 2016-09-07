@@ -5,6 +5,7 @@ import com.alibaba.otter.canal.common.AbstractCanalLifeCycle;
 import com.alibaba.otter.canal.plugins.Consumer;
 import com.alibaba.otter.canal.plugins.ConsumerDispatcher;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -82,6 +83,15 @@ public abstract class AbstractConsumerDispatcher extends AbstractCanalLifeCycle 
                 }
             });
             this.connectorMap = Collections.unmodifiableMap(map2);
+        }
+
+        String enable = System.getProperty("canal.consumer.enable");
+        if (!StringUtils.hasText(enable)) {
+            enable = System.getenv("canal.consumer.enable");
+        }
+        if ("enable".equals(enable)) {
+            start();
+            Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
         }
     }
 
