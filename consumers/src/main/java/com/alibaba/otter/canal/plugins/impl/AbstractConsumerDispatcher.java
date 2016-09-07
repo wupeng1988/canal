@@ -83,15 +83,15 @@ public abstract class AbstractConsumerDispatcher extends AbstractCanalLifeCycle 
                 }
             });
             this.connectorMap = Collections.unmodifiableMap(map2);
-        }
 
-        String enable = System.getProperty("canal.consumer.enable");
-        if (!StringUtils.hasText(enable)) {
-            enable = System.getenv("canal.consumer.enable");
-        }
-        if ("enable".equals(enable)) {
-            start();
-            Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
+            String enable = System.getProperty("canal.consumer.enable");
+            if (!StringUtils.hasText(enable)) {
+                enable = System.getenv("canal.consumer.enable");
+            }
+            if ("enable".equals(enable)) {
+                start();
+                Runtime.getRuntime().addShutdownHook(new Thread(this::stop));
+            }
         }
     }
 
